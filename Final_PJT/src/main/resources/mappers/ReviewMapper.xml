@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.dao.ReviewDao">
+	
+	<insert id="createReview" parameterType="Review">
+        INSERT INTO reviews (user_key, video_key, review_title, review_writer, review_content)
+        VALUES (#{userKey}, #{videoKey}, #{reviewTitle}, #{reviewWriter}, #{reviewContent})
+    </insert>
+	
+	<select id="readOneReview" parameterType="int">
+	    SELECT * FROM reviews
+	    WHERE review_key = #{reviewKey}
+	</select>
+	
+	<select id="readAllReview" parameterType="int">
+	    SELECT * FROM reviews
+	    WHERE video_key = #{videoKey}
+	</select>
+	
+	<update id="updateReview" parameterType="Review">
+		UPDATE reviews 
+		SET review_title = #{reviewTitle}, review_writer = #{reviewWriter},	review_content = #{reviewContent}
+    	WHERE review_key = #{reviewKey}
+	</update>
+
+	<delete id="deleteOneReview" parameterType="int">
+	    DELETE FROM reviews
+	    WHERE review_key = #{reviewKey}
+	</delete>
+	
+	<delete id="deleteAllReview" parameterType="int">
+		DELETE FROM reviews
+		WHERE video_key = #{videoKey}
+	</delete>
+	
+	<select id="getReviewByReviewKey" parameterType="int" resultType="Review">
+	    SELECT * FROM reviews 
+	    WHERE review_key = #{reviewKey}
+	</select>
+	
+</mapper>

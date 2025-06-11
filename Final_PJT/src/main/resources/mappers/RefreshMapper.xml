@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.dao.RefreshDao">
+	
+	<!-- 리프레쉬 토큰 확인 -->
+	<select id="existsByRefresh" parameterType="string" resultType="boolean">
+		SELECT * FROM REFRESH WHERE refresh = #{refresh}
+	</select>
+	<!-- 리프레쉬 토큰 삭제 -->
+	<delete id="deleteByRefresh" parameterType="string">
+		DELETE FROM REFRESH WHERE refresh = #{refresh}
+	</delete>
+	<!-- 리프레쉬 토큰 삽입 -->
+	<insert id="insertRefreshToken" parameterType="RefreshDTO">
+		INSERT INTO REFRESH (Id, username, refresh, expiration)
+		VALUES (#{id}, #{username}, #{refresh}, #{expiration})
+	</insert>
+</mapper>

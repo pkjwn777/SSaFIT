@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.dao.VideoDao">
+
+    <!-- 비디오 단일 조회 -->
+    <select id="selectOne" parameterType="int" resultType="com.ssafy.model.dto.Video">
+    	SELECT * FROM VIDEOS WHERE video_key = #{videoKey};
+    </select>
+    
+    <!-- 비디오 단일 조회 -->
+    <update id="addViewCnt" parameterType="int">
+    	UPDATE VIDEOS SET video_ViewCnt = video_ViewCnt + 1
+    	WHERE video_key = #{videoKey}
+    </update>
+    
+    <!-- 비디오 수정 -->
+    <update id="update" parameterType="Video">
+    	UPDATE VIDEOS
+    	SET
+        video_title = #{videoTitle},
+        video_fitPartName = #{videoFitPartName},
+        video_link = #{videoLink},
+        video_channelName = #{videoChannelName}
+    WHERE video_key = #{videoKey};
+    </update>
+	
+	<!-- 비디오 여러 조건으로 검색 -->
+	<select id="searchBy" parameterType="Video" resultType="Video">
+        SELECT *
+        FROM Videos
+        <where>
+            <if test="videoKey != null and videoKey != ''">
+                AND video_key = #{videoKey}
+            </if>
+            <if test="videoTitle != null and videoTitle != ''">
+                AND video_title LIKE CONCAT('%', #{videoTitle}, '%')
+            </if>
+            <if test="videoChannelName != null and videoChannelName != ''">
+                AND video_channelName = #{videoChannelName}
+            </if>
+            <if test="videoFitPartName != null and videoFitPartName != ''">
+                AND video_fitPartName = #{videoFitPartName}
+            </if>
+        </where>
+    </select>
+    
+    
+	<!-- 비디오 두 가지 조건으로 정렬 -->
+	<select id="orderBy" parameterType="String" resultType="Video">
+        SELECT *
+        FROM Videos
+        <choose>
+			<when test='_parameter == "viewCnt"'>
+                ORDER BY video_viewCnt DESC
+            </when>
+            <otherwise>
+				ORDER BY video_Key DESC
+			</otherwise>
+		</choose>
+        LIMIT 15
+    </select>
+    
+    <!-- 비디오 단일 삭제 -->
+    <delete id="deleteOne" parameterType="int">
+    	DELETE FROM VIDEOS WHERE video_key = #{videoKey};
+    </delete>
+    
+    <!-- 채널 비디오 전체 삭제 -->
+    <delete id="deleteList" parameterType="String">
+    	DELETE FROM VIDEOS WHERE video_channelName = #{videoChannelName};
+    </delete>
+</mapper>

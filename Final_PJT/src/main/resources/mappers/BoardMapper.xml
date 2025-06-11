@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.dao.UserRepository">
+
+
+	<!-- 로그인 -->
+	<select id="Auth" parameterType="User" resultType="User">
+		SELECT *
+		FROM
+		board
+		WHERE userId = #{userId}
+		AND userPWD = #{userPassword};
+	</select>
+
+	<!-- 회원가입(자체) -->
+	<insert id="regist" parameterType="User">
+		INSERT INTO USER (userId, userPassword, userEmail)
+		VALUES (#{userId}, #{userPassword}, #{userEmail});
+	</insert>
+
+	<!-- 팔로우리스트 조회 -->
+	<select id="selectFollower" parameterType="Followship"
+		resultType="User">
+		SELECT *
+		FROM board
+		WHERE following = #{following};
+	</select>
+
+	<select id="selectFollowing" parameterType="Followship"
+		resultType="User">
+		SELECT *
+		FROM board
+		WHERE follower = #{follower};
+	</select>
+
+	<!-- 단일 회원 조회 -->
+	<select id="selectOne" parameterType="int"
+		resultType="User">
+		SELECT *
+		FROM board
+		WHERE userKey = #{userKey};
+	</select>
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateUser" parameterType="User">
+		UPDATE board
+		SET
+		userPassword = #{userPassword}, userEmail = #{userEmail}
+		WHERE userKey
+		= #{userKey};
+	</update>
+
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM USER
+		WHERE userKey = #{userKey};	</delete>
+</mapper>

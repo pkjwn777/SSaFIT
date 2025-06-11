@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.dao.S3Dao">
+	<!-- 비디오 등록 -->
+	<insert id="insertVideo" parameterType="Video" useGeneratedKeys="true" keyProperty="videoKey">
+        INSERT INTO videos (user_key, video_title, video_fitPartName, video_link, video_channelName, video_viewCnt, video_type)
+        VALUES (#{userKey}, #{videoTitle}, #{videoFitPartName}, #{videoLink}, #{videoChannelName}, #{videoViewCnt}, #{videoType})
+    </insert>
+	
+	<resultMap id="videoResultMap" type="Video">
+	    <id property="videoKey" column="video_key"/>
+	    <result property="userKey" column="user_key"/>
+	    <result property="videoTitle" column="video_title"/>
+	    <result property="videoFitPartName" column="video_fitPartName"/>
+	    <result property="videoLink" column="video_link"/>
+	    <result property="videoChannelName" column="video_channelName"/>
+	    <result property="videoViewCnt" column="video_viewCnt"/>
+	    <result property="videoType" column="video_type" javaType="char"/>
+	</resultMap>
+	
+	<update id="updateVideo" parameterType="Video">
+        UPDATE videos
+        SET
+        video_title = #{videoTitle},
+        video_fitPartName = #{videoFitPartName},
+        video_link = #{videoLink}
+        WHERE video_key = #{videoKey}
+    </update>
+	
+	<delete id="deleteVideo" parameterType="int">
+	    DELETE FROM videos
+	    WHERE video_key = #{videoKey}
+	</delete>
+	
+	<update id="setDatabaseLink" parameterType="Video">
+	    UPDATE videos
+	    SET video_link = #{videoLink}
+	    WHERE video_key = #{videoKey}
+	</update>
+	
+</mapper>

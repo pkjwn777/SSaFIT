@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.dao.UserDao">
+	
+	<select id="selectOne" parameterType="int" resultType="User">
+	    SELECT * FROM users 
+	    WHERE user_key = #{userKey}
+	</select>
+	
+	<select id="searchList" parameterType="string" resultType="User"> 
+		SELECT * FROM users 
+	    WHERE user_id LIKE CONCAT('%', #{userId}, '%')
+	</select>
+	    
+	<select id="isExist" parameterType="string" resultType="int"> 
+		SELECT COUNT(*) FROM USERS WHERE user_id = #{userId}
+	</select>
+
+	<select id="searchFollowing" parameterType="int" resultType="int">
+	    SELECT followerUser FROM u_u 
+	    WHERE followingUser = #{userKey}
+	</select>
+	
+	<select id="searchFollower" parameterType="int" resultType="int">
+	    SELECT followingUser FROM u_u 
+	    WHERE followerUser = #{userKey}
+	</select>
+	
+	<insert id="follow" parameterType="map">
+        INSERT INTO u_u (followerUser, followingUser)
+        VALUES (#{followerKey}, #{followingKey})
+    </insert>
+	
+	<update id="update" parameterType="User">
+    	UPDATE USERS
+    	SET
+        user_id = #{userId},
+        user_email = #{userEmail}
+    WHERE user_key = #{userKey};
+    </update>
+	
+	<!-- 비디오 단일 삭제 -->
+    <delete id="delete" parameterType="int">
+    	DELETE FROM users
+    	WHERE user_key = #{userKey};
+    </delete>
+	
+	
+    <insert id="regist" parameterType="com.ssafy.model.dto.User">
+        INSERT INTO users (user_id, user_password, user_email)
+        VALUES (#{userId}, #{userPassword}, #{userEmail})
+    </insert>
+
+    <select id="selectByUserId" parameterType="string" resultType="com.ssafy.model.dto.User">
+        SELECT * FROM users WHERE user_id = #{userId}
+    </select>
+    
+    <select id="getUserKeyByUserId" parameterType="string" resultType="int">
+	    SELECT user_key FROM users 
+	    WHERE user_id = #{userId}
+	</select>
+    
+</mapper>
